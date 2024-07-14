@@ -2,7 +2,8 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { decode, verify } from "hono/jwt";
-import { blogPostInput } from "../zodchecks";
+import { createBlogInput, updateBlogInput } from "@vishwas-babar/medium-common";
+
 
 export const blogRoute = new Hono<{
     Bindings: {
@@ -58,7 +59,7 @@ blogRoute.post('/create', async (c) => {
         datasourceUrl: c.env.DATABASE_URL
     }).$extends(withAccelerate())
 
-    const { success, data } = blogPostInput.safeParse(body)
+    const { success, data } = createBlogInput.safeParse(body)
 
     if (!success) {
         c.status(400)
@@ -98,7 +99,7 @@ blogRoute.put('/update', async (c) => {
         datasourceUrl: c.env.DATABASE_URL
     }).$extends(withAccelerate())
 
-    const { success, data } = blogPostInput.safeParse(body)
+    const { success, data } = updateBlogInput.safeParse(body)
 
     if (!success) {
         c.status(400)

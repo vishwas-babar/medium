@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { sign } from 'hono/jwt';
 import { setCookie } from "hono/cookie";
-import { signupUserInput } from '../zodchecks';
+import { signupUserInput } from '@vishwas-babar/medium-common';
 
 export const userRoute = new Hono<{
     Bindings: {
