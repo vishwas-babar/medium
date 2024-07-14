@@ -19,7 +19,13 @@ node_modules/
 .env
 .env.production
 .dev.vars
-wrangler.toml
+.toml
+backend/wrangler.toml
+backend/.env
+backend/.env.production
+backend/.dev.vars
+backend/.env.development
+
 
 # logs
 logs/
