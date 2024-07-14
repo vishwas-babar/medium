@@ -2,7 +2,8 @@ import { Hono } from 'hono'
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { decode, sign, verify, jwt } from 'hono/jwt';
-import { setCookie } from "hono/cookie";
+import { getCookie, setCookie } from "hono/cookie";
+import { Context } from "hono";
 
 const app = new Hono<{
   Bindings: {
@@ -11,8 +12,54 @@ const app = new Hono<{
   }
 }>()
 
+interface CustomContext extends Context{
+  user?: tokenCookiePayload;
+}
+
+interface tokenCookiePayload  {
+  email?: string,
+  name?: string,
+  id?: string,
+}
+
+app.use('/api/v1/blog/*', async (c: CustomContext, next) => {
+
+  const header = c.req.header("authorization") || "";
+
+  //Bearer token => ["Bearer", "token"]
+  const token = header.split(" ")[1]
+
+  const verifiedUser: any = await verify(token, c.env.JWT_SECRET)
+
+  if (verifiedUser.id) {
+    // c.user = verifiedUser
+    c.set('user', verifiedUser)
+    return next()
+  }
+  
+  c.status(403)
+  return c.json({ message: "invalid token, login again" })
+})
+
 app.get('/', async (c) => {
-  return c.json({ message: 'home route' })
+
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL
+  }).$extends(withAccelerate())
+
+  const user = await prisma.user.create({
+    data: {
+      email: "test@gmail.com",
+      password: "test@pass",
+      name: "test name"
+    }
+  })
+
+  if (!user) {
+    return c.json({ message: "failed to create a user" })
+  }
+  console.log(user)
+  return c.json({ message: 'user created' })
 })
 
 app.post('/api/v1/signup', async (c) => {
@@ -113,11 +160,11 @@ app.post('/api/v1/login', async (c) => {
 
 })
 
-app.post('/api/v1/post-blog', (c) => {
+app.post('/api/v1/blog/create', (c) => {
   return c.text('this is the blog route')
 })
 
-app.put('/api/v1/update-blog/:id', (c) => {
+app.put('/api/v1/blog/update/:id', (c) => {
   return c.text('this is the blog put route')
 })
 

@@ -15,12 +15,14 @@ dist/
 node_modules/
 .wrangler
 
+
 # env
 .env
 .env.production
 .dev.vars
 .toml
 backend/wrangler.toml
+wrangler.toml
 backend/.env
 backend/.env.production
 backend/.dev.vars
