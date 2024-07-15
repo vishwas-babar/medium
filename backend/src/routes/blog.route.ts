@@ -80,7 +80,7 @@ blogRoute.post('/create', async (c) => {
 
         if (createdPost?.id) {
             c.status(200)
-            return c.json({ message: "post created" })
+            return c.json({ message: "post created", id: createdPost.id })
         }
 
         c.status(500)
@@ -146,6 +146,11 @@ blogRoute.get('/:id', async (c) => {
                 title: true,
                 content: true,
                 authorId: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         })
 
@@ -178,9 +183,15 @@ blogRoute.get('/get-blogs/:page', async (c) => {
             skip: postsToSkip,
             take: postsToTake,
             select: {
+                content: true,
                 title: true,
                 id: true,
                 authorId: true,
+                author: {
+                    select: {
+                        name: true,
+                    }
+                }
             }
         })
 
