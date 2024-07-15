@@ -1,4 +1,4 @@
-import { LoginUserInput, SignupUserInput } from '@vishwas-babar/medium-common';
+import { LoginUserInput, signupUserInput, SignupUserInput } from '@vishwas-babar/medium-common';
 import axios from 'axios';
 import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -32,11 +32,35 @@ const Auth = ({ authType }: { authType: "signin" | "signup" }) => {
                 localStorage.setItem('token', jwt);
                 navigate('/')
             }
-        } catch (error) {
-            alert('please try again later!')
+        } catch (error: any) {
+            if (error.response.status === 401) {
+                alert('invalid password')
+            } else if (error.response.status === 404) {
+                alert('user with that email not found')   
+            } else {
+                alert('please try again later!')
+            }
         }
     }
     async function signupUserSubmit() {
+
+        const { success, data, error } = signupUserInput.safeParse(signupUserInputData);
+        if (!success) {
+            // alert('invalid input')
+            alert(error)
+            return;
+        }
+
+        if (signupUserInputData.name.length < 3) {
+            alert('name must be atleast 3 characters')
+            return;
+        }
+
+        if (signupUserInputData.password.length < 6) {
+            alert('password must be atleast 6 characters')
+            return;
+        }
+
         try {
             const response = await axios.post(`${BACKEND_URL}/user/signup`, signupUserInputData);
 

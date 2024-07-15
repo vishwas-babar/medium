@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import BlogCard from '../components/BlogCard'
 import { useBlogs } from '../customHooks'
 import TopNav from '../components/TopNav'
 
 const Home = () => {
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
 
   const { blogs, isLoading } = useBlogs(page);
 
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div className='h-screen flex items-center justify-center text-3xl font-semibold'>
+      Loading...
+    </div>
   }
 
   return (
