@@ -1,6 +1,6 @@
 import { LoginUserInput, signupUserInput, SignupUserInput } from '@vishwas-babar/medium-common';
 import axios from 'axios';
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { BACKEND_URL } from '../config';
 
@@ -44,7 +44,7 @@ const Auth = ({ authType }: { authType: "signin" | "signup" }) => {
     }
     async function signupUserSubmit() {
 
-        const { success, data, error } = signupUserInput.safeParse(signupUserInputData);
+        const { success, error } = signupUserInput.safeParse(signupUserInputData);
         if (!success) {
             // alert('invalid input')
             alert(error)

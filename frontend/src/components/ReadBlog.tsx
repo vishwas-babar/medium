@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Avatar } from './BlogCard'
 
 const ReadBlog = ({
@@ -6,8 +6,6 @@ const ReadBlog = ({
     content,
     authorName,
     publishedDate,
-    authorId,
-    postid
 }: {
     title: string,
     content: string,

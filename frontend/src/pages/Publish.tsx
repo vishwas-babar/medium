@@ -1,6 +1,6 @@
 import { CreateBlogInput } from "@vishwas-babar/medium-common"
 import axios from "axios"
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { BACKEND_URL } from "../config"
 import { useNavigate } from "react-router-dom"
 

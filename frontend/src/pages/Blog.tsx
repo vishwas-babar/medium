@@ -1,5 +1,4 @@
-import React from 'react'
-import BlogCard from '../components/BlogCard'
+
 import ReadBlog from '../components/ReadBlog'
 import { useParams } from 'react-router-dom'
 import { useBlog } from '../customHooks'

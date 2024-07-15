@@ -5,7 +5,7 @@ import TopNav from '../components/TopNav'
 
 const Home = () => {
 
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
 
   const { blogs, isLoading } = useBlogs(page);
 
